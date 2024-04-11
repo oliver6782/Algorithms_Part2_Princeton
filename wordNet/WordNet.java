@@ -54,7 +54,16 @@ public class WordNet {
         DirectedCycle checkGraph = new DirectedCycle(g);
         if (checkGraph.hasCycle()) throw new IllegalArgumentException(
                 "Not a DAG"); // check whether the graph is a directed acyclic graph(A.K.A DAG)
-
+        
+        int rootNum = 0;
+        for (int i = 0; i < count; i++) {
+            if (g.outdegree(i) == 0 && g.indegree(i) != 0) {
+                rootNum++;
+            } // there are nodes in the graph that have neither edge in nor edge out(isolated nodes, not connected)
+            // these nodes can't be considered roots.
+        }
+        if (rootNum != 1) throw new IllegalArgumentException("not single rooted");
+        // check single rooted digraph
 
         sap = new SAP(g);
     }
